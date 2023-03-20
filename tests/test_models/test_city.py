@@ -33,7 +33,6 @@ class TestCity(unittest.TestCase):
 
     @unittest.skipIf(type(models.storage) == FileStorage,
                      "Testing FileStorage")
-
     def test_save_filestorage(self):
         """Test save method with FileStorage."""
         old = self.city.updated_at
@@ -44,7 +43,6 @@ class TestCity(unittest.TestCase):
 
     @unittest.skipIf(type(models.storage) == FileStorage,
                      "Testing FileStorage")
-
     def test_to_dict(self):
         """Test to_dict method."""
         city_dict = self.city.to_dict()
