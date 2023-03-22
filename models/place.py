@@ -24,7 +24,7 @@ class Place(BaseModel, Base):
         city_id = Column(String(60), ForeignKey("cities.id"), nullable=False)
         user_id = Column(String(60), ForeignKey("users.id"), nullable=False)
         name = Column(String(128), nullable=False)
-        description = Column(String(1024), default=0, nullable=True)
+        description = Column(String(1024), default="NULL", nullable=True)
         number_rooms = Column(Integer, default=0)
         number_bathrooms = Column(Integer, default=0)
         max_guest = Column(Integer, default=0)
