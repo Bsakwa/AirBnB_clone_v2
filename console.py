@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 """ Console Module """
+import re
+import shlex
 import cmd
 import sys
 from models.base_model import BaseModel
@@ -11,6 +13,10 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 from shlex import split
+import os
+import uuid
+from datetime import datetime
+from sqlalchemy import DateTime
 
 
 class HBNBCommand(cmd.Cmd):
@@ -30,6 +36,15 @@ class HBNBCommand(cmd.Cmd):
              'max_guest': int, 'price_by_night': int,
              'latitude': float, 'longitude': float
             }
+    my_dict = {
+             "BaseModel": BaseModel,
+             "User": User,
+             "State": State,
+             "City": City,
+             "Amenity": Amenity,
+             "Place": Place,
+             "Review": Review
+             }
 
     def preloop(self):
         """Prints if isatty is false"""
@@ -116,48 +131,62 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        # split arguments by space to get class name
-        args = args.split()
-        # check if class name is missing or not in list of available classes
-        if args == []:
+        ignored_attrs = ('id', 'created_at', 'updated_at', '__class__')
+        class_name = ''
+        name_pattern = r'(?P<name>(?:[a-zA-Z]|_)(?:[a-zA-Z]|\d|_)*)'
+        class_match = re.match(name_pattern, args)
+        obj_kwargs = {}
+        if class_match is not None:
+            class_name = class_match.group('name')
+            params_str = args[len(class_name):].strip()
+            params = params_str.split(' ')
+            str_pattern = r'(?P<t_str>"([^"]|\")*")'
+            float_pattern = r'(?P<t_float>[-+]?\d+\.\d+)'
+            int_pattern = r'(?P<t_int>[-+]?\d+)'
+            param_pattern = '{}=({}|{}|{})'.format(
+                name_pattern,
+                str_pattern,
+                float_pattern,
+                int_pattern
+            )
+            for param in params:
+                param_match = re.fullmatch(param_pattern, param)
+                if param_match is not None:
+                    key_name = param_match.group('name')
+                    str_v = param_match.group('t_str')
+                    float_v = param_match.group('t_float')
+                    int_v = param_match.group('t_int')
+                    if float_v is not None:
+                        obj_kwargs[key_name] = float(float_v)
+                    if int_v is not None:
+                        obj_kwargs[key_name] = int(int_v)
+                    if str_v is not None:
+                        obj_kwargs[key_name] = str_v[1:-1].replace('_', ' ')
+        else:
+            class_name = args
+        if not class_name:
             print("** class name missing **")
             return
-        if args[0] not in HBNBCommand.classes:
+        elif class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        else:
-            cls = args[0]
-        # if class does exist, create new instance
-        new_instance = HBNBCommand.classes[cls]()
-        # if more arguments, resets args without class name
-        if args[1]:
-            args = args[1:]
-        else:
-            # save before returning, in case using FileStorage
+        if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+            if not hasattr(obj_kwargs, 'id'):
+                obj_kwargs['id'] = str(uuid.uuid4())
+            if not hasattr(obj_kwargs, 'created_at'):
+                obj_kwargs['created_at'] = str(datetime.now())
+            if not hasattr(obj_kwargs, 'updated_at'):
+                obj_kwargs['updated_at'] = str(datetime.now())
+            new_instance = HBNBCommand.classes[class_name](**obj_kwargs)
             new_instance.save()
             print(new_instance.id)
-            return
-        # loops through each argument, splitting into key/value pairs
-        for argument in args:
-            sa = argument.split("=")
-            key = sa[0]
-            value = sa[1]
-            # if there are underscores in value, changed to spaces
-            for i in range(len(value)):
-                if value[i] == "_":
-                    value = value[:i] + " " + value[i+1:]
-            # if there are quotes around key or value, trimmed to remove
-            if (key[0] == "'" and key[-1] == "'") or (
-                    key[0] == "\"" and key[-1] == "\""):
-                key = key[1:-1]
-            if (value[0] == "'" and value[-1] == "'") or (
-                    value[0] == "\"" and value[-1] == "\""):
-                value = value[1:-1]
-            # atrribute is set to that key in the dictionary of objects
-            setattr(new_instance, key, value)
-        # new object is saved after setting non-nullable attributes
-        new_instance.save()
-        print(new_instance.id)
+        else:
+            new_instance = HBNBCommand.classes[class_name](**obj_kwargs)
+            for key, value in obj_kwargs.items():
+                if key not in ignored_attrs:
+                    setattr(new_instance, key, value)
+            new_instance.save()
+            print(new_instance.id)
 
     def help_create(self):
         """ Help information for the create method """
@@ -234,16 +263,17 @@ class HBNBCommand(cmd.Cmd):
         """ Shows all objects, or all objects of a class"""
         print_list = []
 
+        __objects = storage.all()
         if args:
             args = args.split(' ')[0]  # remove possible trailing args
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in __objects.items():
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
         else:
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in __objects.items():
                 print_list.append(str(v))
 
         print(print_list)
