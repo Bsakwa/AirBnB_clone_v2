@@ -5,19 +5,19 @@
 apt-get update
 apt-get install -y nginx
 
-# Create respective folder to be served by Nginx
+# Create respective folders to be served by Nginx
 mkdir -p /data/web_static/releases/test/
 mkdir -p /data/web_static/shared/
 echo "Hello Brian. Welcome!" > /data/web_static/releases/test/index.html
 
-# Create a symbolic link
+# Creates a symbolic link
 ln -s /data/web_static/releases/test/ /data/web_static/current
 
-# Set permissions for user and group
+# Sets permissions for user and group
 chown -R ubuntu /data/
 chgrp -R ubuntu /data/
 
-# Set configurations details to server and location blocks
+# Sets configurations details to server and location blocks
 printf %s "server {
 	listen      80 default_server;
 	listen      [::]:80 default_server;
@@ -41,4 +41,5 @@ printf %s "server {
 }
 " > /etc/nginx/sites-available/default
 
+# Restarts nginx after loading making configuration changes
 service nginx restart
