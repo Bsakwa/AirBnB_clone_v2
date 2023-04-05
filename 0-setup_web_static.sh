@@ -41,5 +41,5 @@ printf %s "server {
 }
 " > /etc/nginx/sites-available/default
 
-# Restarts nginx after loading making configuration changes
+# Restarts nginx after loading configuration changes
 service nginx restart
