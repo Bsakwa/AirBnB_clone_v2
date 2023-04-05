@@ -12,7 +12,7 @@ def do_pack():
     """
     Generates .tgz archive and outputs its correct format
     """
-
+    # Creates a folder if it doesn't exist hence the -p option
     local("mkdir -p versions")
 
     # Using the module datetime to format the name of the compressed file
