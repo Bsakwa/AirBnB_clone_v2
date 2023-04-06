@@ -39,10 +39,9 @@ def do_deploy(archive_path):
     Attr:
         archive_path (str): The path of our compressed archive
     """
+    if exists(archive_path) is False:
+        return False
     try:
-        if not (path.exists(archive_path)):
-            return False
-
         file_n = archive_path.split("/")[-1]
         no_ext = file_n.split(".")[0]
         # Upload the the archive to the /tmp directory of the server
