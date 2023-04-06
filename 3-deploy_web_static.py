@@ -39,38 +39,36 @@ def do_deploy(archive_path):
     Attr:
         archive_path (str): The path of our compressed archive
     """
-    if exists(archive_path) is False:
+    if os.path.isfile(archive_path) is False:
         return False
+
     try:
+        # Formats the archive and removes the /
         file_n = archive_path.split("/")[-1]
-        no_ext = file_n.split(".")[0]
-        path = "/data/web_static/releases/"
-        # Upload the the archive to the /tmp directory of the server
+        # Formats the file name to have no tgz extension
+        no_xt = file_n.split(".")[0]
+        # Defines the path to deploy to
+        s_path = "/data/web_static/releases/"
+
+        # uploads the archive to the /tmp folder of the server
         put(archive_path, '/tmp/')
 
-        # Create the destination folder
-        run('mkdir -p {}{}/'.format
-            (path, no_ext))
+        # Creates the destination folder
+        run('mkdir -p {}{}/'.format(s_path, no_xt))
 
         # Uncompress the archive to the web server
-        run("tar -xzf /tmp/{}.tgz -C \
-            {}{}/".format
-            (file_n, path, no_ext))
+        run('tar -xzf /tmp/{} -C {}{}/'.format(file_n, s_path, no_xt))
 
         # Delete the archive from the web server
-        run('rm /tmp/{}.'.format(file_n))
+        run('rm /tmp/{}'.format(file_n))
 
         # Delete the symbolic link from the web server
-        run("mv {0}{1}/web_static/* \
-            {0}{1}/".format
-            (path, no_ext))
-        run("rm -rf {}{}/web_static"
-            .format(path, no_ext))
-        run("rm -rf /data/web_static/current")
+        run('mv {0}{1}/web_static/* {0}{1}/'.format(s_path, no_xt))
+        run('rm -rf {}{}/web_static'.format(s_path, no_xt))
+        run('rm -rf /data/web_static/current')
 
         # Create a new symbolic link
-        run("ln -s {}{}/ \
-            /data/web_static/current".format(path, no_ext))
+        run('ln -s {}{}/ /data/web_static/current'.format(s_path, no_xt))
         return True
     except Exception:
         return False
