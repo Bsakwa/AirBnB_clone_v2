@@ -21,7 +21,7 @@ chgrp -R ubuntu /data/
 printf %s "server {
 	listen      80 default_server;
 	listen      [::]:80 default_server;
-	root        /var/www/html;
+	root        /etc/nginx/html;
 	index       index.html index.htm;
 	add_header  X-Served-By $HOSTNAME;
 
@@ -30,12 +30,12 @@ printf %s "server {
 		index index.html index.htm;
 	}
 	location /redirect_me {
-		return 301 http://cuberule.com/;
+		return 301 http://sakwwa.tech/;
 	}
 
 	error_page 404 /404.html;
 	location /404 {
-		root /var/www/html;
+		root /etc/nginx/html;
 		internal;
 	}
 }
