@@ -1,7 +1,9 @@
 #!/usr/bin/python3
 
 """This module starts a Flask web application"""
+
 if __name__ == "__main__":
+
     from flask import Flask
     app = Flask(__name__)
 
