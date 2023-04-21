@@ -93,3 +93,7 @@ class DBStorage:
                    "Place": Place,
                    "Review": Review}
         return classes
+
+    def close(self):
+        """Closes the current session"""
+        self.__session.close()
