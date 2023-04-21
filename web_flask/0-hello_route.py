@@ -4,6 +4,7 @@
 Starts a Flask web application
 Listens on 0.0.0.0 port 5000
 Routes: /: display “Hello HBNB!”
+Using the option strict_slashes=False in route definition
 """
 
 from flask import Flask
