@@ -14,7 +14,6 @@ def hello_hbnb():
     Routes and Displays Hello HBNB!
     on 0.0.0.0 port 5000
     """
-
     return 'Hello HBNB!'
 
 
