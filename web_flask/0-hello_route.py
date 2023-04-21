@@ -1,6 +1,9 @@
 #!/usr/bin/python3
 
-"""Starts a Flask web application"""
+"""
+Starts a Flask web application
+Listens on 0.0.0.0 port 5000
+"""
 
 from flask import Flask
 
@@ -16,4 +19,4 @@ def hello_hbnb():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0')
