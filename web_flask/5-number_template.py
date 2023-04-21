@@ -12,7 +12,7 @@ Routes:
     /number_template/<n>: Displays an HTML page only if n is an integer
 '''
 
-if __name__== '__main__':
+if __name__ == '__main__':
     from flask import Flask
     from flask import render_template
 
