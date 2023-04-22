@@ -25,7 +25,7 @@ if __name__ == '__main__':
         states = storage.all('State')
         for state in states.values():
             if state.id == id:
-                return render_template('9-states.html', state=state)
+                return render_template('9-states.html', state=state, id=id)
         return render_template('9-states.html')
 
     @app.teardown_appcontext
