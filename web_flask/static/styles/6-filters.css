@@ -65,6 +65,8 @@
 	border-radius: 4px;
 	display: none;
 	margin-left: -19%;
+	overflow-y: scroll;
+	max-height: 300px;
 }
 
 .popover h2 {
