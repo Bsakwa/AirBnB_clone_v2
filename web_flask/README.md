@@ -16,7 +16,7 @@ In this project we learnt and implemented the flask web framework using Python
 ```
 
 ### Run the Flask APP
-To run the flask app web framework, type in the followiwng command in your root directory.
+To run the flask app web framework, type in the followiwng command in the root directory of this project.
 
 ```
 ~ $ HBNB_MYSQL_USER=hbnb_dev HBNB_MYSQL_PWD=hbnb_dev_pwd HBNB_MYSQL_HOST=localhost
