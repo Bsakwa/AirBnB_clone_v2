@@ -17,21 +17,21 @@ In this project we learnt and implemented the flask web framework using Python
 
 ### Screenshots
 <p align="center">
-  <img src="https://github.com/bdbaraban/AirBnB_clone_v2/blob/master/assets/hbnbscreenshot.png"
+  <img src="https://github.com/Bsakwa/AirBnB_clone_v2/blob/master/web_flask/assets/hbnbscreenshot.png"
        alt="HolbertonBnB logo">
 </p>
 
 ---
 
 <p align="center">
-  <img src="https://github.com/bdbaraban/AirBnB_clone_v2/blob/master/assets/hbnb2.png"
+  <img src="https://github.com/Bsakwa/AirBnB_clone_v2/blob/master/web_flask/assets/hbnb2.png"
        alt="HolbertonBnB logo">
 </p>
 
 ---
 
 <p align="center">
-  <img src="https://github.com/bdbaraban/AirBnB_clone_v2/blob/master/assets/hbnb3.png"
+  <img src="https://github.com/Bsakwa/AirBnB_clone_v2/blob/master/web_flask/assets/hbnb3.png"
        alt="HolbertonBnB logo">
 </p>
 
