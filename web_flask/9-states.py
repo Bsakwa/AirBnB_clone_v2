@@ -20,11 +20,14 @@ if __name__ == '__main__':
         return render_template('9-states.html', states=states)
 
     @app.route('/states/<id>', strict_slashes=False)
-    def states_id(id):
+    def states_id(id=None):
         '''Display a HTML page with the State and it's Cities'''
         states = storage.all('State')
         for state in states.values():
-            if state.id == id:
+            if state.id == None:
+                state = None
+                return render_template('9-states.html', state=state, id=id)
+            elif state.id == id:
                 return render_template('9-states.html', state=state, id=id)
         return render_template('9-states.html')
 
